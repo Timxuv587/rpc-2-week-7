@@ -64,6 +64,7 @@ def predict():
         input = json.load(f)
     if(input != {}):
         recommendations = []
+        times = []
         distributions = ['II', 'III']
         course_info = pd.read_csv('Northwestern_course_information_new.csv')
 
@@ -108,8 +109,18 @@ def predict():
                     while(i < len(predictions) & (compare_schedule(course_info, recommendations, predictions.index[i]) == 0 or predictions.index[i] in recommendations)):
                         i += 1
                     recommendations.append(predictions.index[i])
+                    info =  course_info[course_info['ClassName'] == predictions.index[i]].reset_index(drop=True)
+                    start = info['start time'].to_string(index=False)
+                    end =  info['end time'].to_string(index=False)
+                    date = info['date'].to_string(index=False)
+                    # print("END: ", end)
+                    # print("DATE:", date)
+                    times.append(date + ': ' + start + '-' + end)
+                    
         print("Recommendations:", recommendations)
-        return render_template('index.html', result=recommendations)
+        print("PRECITIONS", predictions)
+        print("TIMES:", times)
+        return render_template('index.html', result=recommendations, user=input, times=times)
     return render_template('index.html', result=[])
 @app.route('/rating', methods=['POST', 'GET'])
 def rating():

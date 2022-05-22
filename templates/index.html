@@ -5,11 +5,25 @@
         <link rel="stylesheet" href="../static/styles/main.css" />
     </head>
     <body>
-        <h1>Welcome to the Recommendation System!</h1>
-        <h2>this is your result : {{result}}</h2>
-        <div>
-            <h2>this is a box</h2>
+        <nav>
+            <a>Home</a> <a href="/rating">Rating</a>
+        </nav> 
+        <section>
+            <h1>{{result}}</h1>
+            <h1> Welcome to Northwestern's Course Recommendation System!</h1>
+            <h1>Recommendation System</h1>
+                <h2>Recently Taken Courses</h2>
+                    {% for info in user %}
+                            <p class="course_name">{{info}}</p>
+                    {% endfor %}
+                <h2>Your Recommendations:</h2>
+                {% for course in result %}
+                    <div class="course_name">
+                        <p class="results">{{result[loop.index-1]}}</p>
+                        <p class="times">{{times[loop.index-1]}}</p>
+                    </div>
 
-        </div>
+                {% endfor %}
+        </section>
     </body>
 </html>
