@@ -113,8 +113,9 @@ def predict():
     return render_template('index.html', result=[])
 @app.route('/rating', methods=['POST', 'GET'])
 def rating():
-    
-    return render_template("rating.html")
+    course_info = pd.read_csv('ratings_new.csv')
+    print(np.array(course_info.columns)[1:])
+    return render_template("rating.html", courses = np.array(course_info.columns)[1:])
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':

@@ -16,11 +16,10 @@
             <input type="submit" value="Submit">
 
             <datalist id="classes">
-                <option value="Internet Explorer">
-                <option value="Firefox">
-                <option value="Google Chrome">
-                <option value="Opera">
-                <option value="Safari">
+                {%for i in courses%}
+
+                        <option value={{i}}>
+                    {%endfor%}
             </datalist>
         </form>
 
