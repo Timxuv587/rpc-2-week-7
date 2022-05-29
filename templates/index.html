@@ -12,18 +12,33 @@
             <h1>{{result}}</h1>
             <h1> Welcome to Northwestern's Course Recommendation System!</h1>
             <h1>Recommendation System</h1>
-                <h2>Recently Taken Courses</h2>
-                    {% for info in user %}
-                            <p class="course_name">{{info}}</p>
-                    {% endfor %}
-                <h2>Your Recommendations:</h2>
-                {% for course in result %}
-                    <div class="course_name">
-                        <p class="results">{{result[loop.index-1]}}</p>
-                        <p class="times">{{times[loop.index-1]}}</p>
-                    </div>
-
-                {% endfor %}
+            <h2>Recently Taken Courses</h2>
+            {% for info in user %}
+            <p class="course_name">{{info}}</p>
+            {% endfor %}
+            <h2>Your Recommendations:</h2>
+            <form action="/home" method="POST">
+                <label for="distro">Distro: </label>
+                <input type="text" list="area" id="distro" name="distro">
+                <input type="submit" value="Filter">
+                <datalist id="area">
+                    <option value="I">
+                    <option value="II">
+                    <option value="III">
+                    <option value="IV">
+                    <option value="V">
+                    <option value="VI">
+                </datalist>
+            </form>
+            {% for course in result %}
+                {% if filter == area[loop.index-1] or filter == ''%}
+                <div class="course_name">
+                    <p class="results">{{result[loop.index-1]}}</p>
+                    <p class="times">{{times[loop.index-1]}}</p>
+                    <p class="times">{{area[loop.index-1]}}</p>
+                </div>
+                {% endif %}
+            {% endfor %}
         </section>
     </body>
 </html>

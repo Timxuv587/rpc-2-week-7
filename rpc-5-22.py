@@ -53,18 +53,24 @@ app = Flask(__name__)
 @app.route('/home', methods=['POST', 'GET'])
 def predict():
     output = request.form.to_dict()
+    filter = ""
     if(output != {}):
         print(output)
-        with open('data.json', "r+") as f:
-            data = json.load(f)
-            data[output["course"]] = output["rating"]
-            f.seek(0)
-            json.dump(data, f)
+        if "rating" in output:
+            with open('data.json', "r+") as f:
+                data = json.load(f)
+                data[output["course"]] = output["rating"]
+                f.seek(0)
+                json.dump(data, f)
+        else:
+            filter = output["distro"]
     with open('data.json', "r+") as f:
         input = json.load(f)
+    print("distro is "+filter)
     if(input != {}):
         recommendations = []
         times = []
+        area = []
         distributions = ['II', 'III']
         course_info = pd.read_csv('Northwestern_course_information_new.csv')
 
@@ -116,11 +122,13 @@ def predict():
                     # print("END: ", end)
                     # print("DATE:", date)
                     times.append(date + ': ' + start + '-' + end)
+                    area.append(info['area'].to_string(index=False).strip())
                     
         print("Recommendations:", recommendations)
         print("PRECITIONS", predictions)
         print("TIMES:", times)
-        return render_template('index.html', result=recommendations, user=input, times=times)
+        print("Area: ", area)
+        return render_template('index.html', result=recommendations, user=input, times=times, area =area, filter=filter)
     return render_template('index.html', result=[])
 @app.route('/rating', methods=['POST', 'GET'])
 def rating():
